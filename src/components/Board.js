@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import ReactFlow, { Controls } from 'react-flow-renderer'
+import ReactFlow, { Controls, useStoreState } from 'react-flow-renderer'
 import styled from '@emotion/styled'
 import { Circle, Square, Triangle, Base } from './Shapes'
 
@@ -92,11 +92,15 @@ const Board = () => {
     console.log(id)
   }
 
+  const onLoad = reactFlowInstance => {
+    reactFlowInstance.fitView()
+  }
+
   return (
     <div>
       <OverLay>
         <button onClick={handleAdd}>+</button>
-        <ReactFlow elements={elements}>
+        <ReactFlow onLoad={onLoad} elements={elements}>
           <Controls />
         </ReactFlow>
       </OverLay>

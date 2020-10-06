@@ -46,7 +46,6 @@ const BaseContainer = styled.div`
   height: 150px;
   margin: 0 20px;
   shape-outside: polygon(0 0, 100% 0, 100% 51%, 52% 100%, 0% 50%);
-0 0, 100% 0, 100% 51%, 52% 100%, 0% 50%);
   clip-path: polygon(0 0, 100% 0, 100% 51%, 52% 100%, 0% 50%);
   background: #28c76f;
   color: #fff;

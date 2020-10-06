@@ -7,7 +7,8 @@ const CircleContainer = styled.div`
   line-height: 100px;
   text-align: center;
   font-size: 1em;
-  background: lightblue;
+  background: #28c76f;
+  color: #fff;
   border-radius: 50%;
   width: 100px;
   height: 100px;
@@ -18,7 +19,8 @@ const SquareContainer = styled.div`
   line-height: 100px;
   text-align: center;
   font-size: 1em;
-  background: lightblue;
+  background: #28c76f;
+  color: #fff;
   width: 100px;
   height: 100px;
   word-wrap: break-word;
@@ -44,8 +46,10 @@ const BaseContainer = styled.div`
   height: 150px;
   margin: 0 20px;
   shape-outside: polygon(0 0, 100% 0, 100% 51%, 52% 100%, 0% 50%);
+0 0, 100% 0, 100% 51%, 52% 100%, 0% 50%);
   clip-path: polygon(0 0, 100% 0, 100% 51%, 52% 100%, 0% 50%);
-  background: lightblue;
+  background: #28c76f;
+  color: #fff;
 `
 
 export const Circle = ({ id, title }) => {

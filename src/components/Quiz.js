@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { questions as questionnaire } from './../questions'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 
 function Quiz() {
+  const history = useHistory()
   const { index = 0 } = useParams()
   const questions = questionnaire[index]
 
@@ -37,9 +38,14 @@ function Quiz() {
     }
   }
 
+  function handleGoBoard() {
+    history.push('/')
+  }
+
   return (
     <div className='App'>
       <div className='question-section'>
+        <button onClick={handleGoBoard}>Board</button>
         <h1>Questionnaire {index}</h1>
         <div className='question-count'>
           <span>Question {currentQuestion + 1}</span>/{questions.length}

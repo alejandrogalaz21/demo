@@ -14,7 +14,7 @@ const PanelContainer = styled.div`
   z-index: 40;
 `
 
-const Panel = ({ add }) => {
+const Panel = ({ add, closePanel }) => {
   const [error, setError] = useState(false)
   const [type, setType] = useState('')
   const [title, setTitle] = useState('')
@@ -26,6 +26,7 @@ const Panel = ({ add }) => {
       return
     }
     add({ title, type })
+    closePanel(false)
   }
   return (
     <PanelContainer>

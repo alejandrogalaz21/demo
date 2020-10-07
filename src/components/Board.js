@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import ReactFlow, {
   removeElements,
-  addEdge,
   Controls,
   useStoreState,
   ReactFlowProvider
@@ -27,7 +26,7 @@ const style = {
 }
 
 const NodesDebugger = () => {
-  const nodes = useStoreState(state => state.nodes)
+  const nodes = useStoreState(state => state)
   console.log(nodes)
   return null
 }
@@ -165,7 +164,7 @@ const Board = () => {
       <OverLay>
         <button onClick={handleOpenPanel}>Options</button>
 
-        {show && <Pandel add={handleAdd} />}
+        {show && <Pandel add={handleAdd} closePanel={setShow} />}
 
         <ReactFlowProvider>
           <ReactFlow
@@ -176,7 +175,7 @@ const Board = () => {
             onElementsRemove={handleOnElementsRemove}
             onMoveEnd={handleOnMoveEnd}>
             <Controls />
-            {/* <NodesDebugger /> */}
+            <NodesDebugger />
           </ReactFlow>
         </ReactFlowProvider>
       </OverLay>

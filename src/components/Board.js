@@ -1,7 +1,15 @@
 import React, { useState } from 'react'
-import ReactFlow, { Controls, useStoreState } from 'react-flow-renderer'
+import ReactFlow, {
+  removeElements,
+  addEdge,
+  Controls,
+  useStoreState,
+  ReactFlowProvider
+} from 'react-flow-renderer'
 import styled from '@emotion/styled'
 import { Circle, Square, Triangle, Base } from './Shapes'
+import './board.css'
+import Pandel from './Panel'
 
 const OverLay = styled.div`
   position: fixed;
@@ -18,13 +26,19 @@ const style = {
   borderStyle: 'none'
 }
 
+const NodesDebugger = () => {
+  const nodes = useStoreState(state => state.nodes)
+  console.log(nodes)
+  return null
+}
+
 const Board = () => {
-  const elementsMap = [
+  const initialElements = [
     {
       form: true,
       id: '1',
       type: 'input', // input node
-      data: { label: <Circle id='1' title='Inicio' /> },
+      data: { label: <Circle id='1' title='nodo 1' /> },
       position: { x: 5, y: 40 },
       sourcePosition: 'right',
       style
@@ -33,7 +47,7 @@ const Board = () => {
       form: true,
       id: '2',
       // you can also pass a React component as a label
-      data: { label: <Square id='2' title='Agendar Cita' /> },
+      data: { label: <Square id='2' title='nodo 2' /> },
       position: { x: 240, y: 40 },
       targetPosition: 'left',
       sourcePosition: 'right',
@@ -43,7 +57,7 @@ const Board = () => {
       form: true,
       id: '3',
       // you can also pass a React component as a label
-      data: { label: <Square id='3' title='Confirmacion' /> },
+      data: { label: <Square id='3' title='nodo 3' /> },
       position: { x: 480, y: 40 },
       targetPosition: 'left',
       style
@@ -51,8 +65,8 @@ const Board = () => {
     {
       form: true,
       id: '4',
-      type: 'output',
-      data: { label: <Base id='3' title='Aprobacion Comar' /> },
+      type: 'default',
+      data: { label: <Square id='3' title='nodo 4' /> },
       position: { x: 10, y: 250 },
       style
     },
@@ -60,7 +74,7 @@ const Board = () => {
       form: true,
       id: '5',
       type: 'output',
-      data: { label: <Triangle id='3' title='' /> },
+      data: { label: <Circle id='3' title='nodo 5' /> },
       position: { x: 480, y: 250 },
       style
     },
@@ -70,21 +84,48 @@ const Board = () => {
     { id: 'e3-4', source: '3', target: '4' }
   ]
 
-  const [elements, setElements] = useState(elementsMap)
+  const [elements, setElements] = useState(initialElements)
 
-  function handleAdd() {
+  function nextId(elements) {
     const idNumber = elements.reduce((a, b) => {
       if (b.form) {
         return a + 1
       }
       return a
     }, 0)
-    const id = idNumber + 1
+    return idNumber + 1
+  }
+
+  function componentType(id, title, type) {
+    switch (type) {
+      case 'default':
+        return {
+          targetPosition: 'left',
+          sourcePosition: 'right',
+          data: { label: <Square id={id} title={title} /> }
+        }
+      case 'input':
+        return {
+          sourcePosition: 'right',
+          data: { label: <Circle id={id} title={title} /> }
+        }
+      case 'output':
+        return { data: { label: <Triangle id={id} title={title} /> } }
+      default:
+        return {
+          data: { data: { label: <Square id={id} title={title} /> } }
+        }
+    }
+  }
+
+  function handleAdd({ title, type }) {
+    const id = nextId(elements)
+    const data = componentType(2, title, type)
+    debugger
     const element = {
+      ...data,
       form: true,
       id,
-      // you can also pass a React component as a label
-      data: { label: <Square id='3' title='nuevo' /> },
       position: { x: 40, y: -40 },
       style
     }
@@ -96,13 +137,48 @@ const Board = () => {
     reactFlowInstance.fitView()
   }
 
+  const onElementClick = reactFlowInstance => {
+    console.log(reactFlowInstance)
+  }
+
+  const onConnect = params => {
+    const { source, target } = params
+    const edge = { id: `e${source}-${target}`, source, target }
+    setElements([...elements, edge])
+  }
+
+  const handleOnElementsRemove = elementsToRemove => {
+    setElements(els => removeElements(elementsToRemove, els))
+  }
+
+  const [show, setShow] = useState(false)
+  const handleOnMoveEnd = transform => {
+    console.log('zoom/move end', transform)
+  }
+
+  function handleOpenPanel() {
+    setShow(!show)
+  }
+
   return (
     <div>
       <OverLay>
-        <button onClick={handleAdd}>+</button>
-        <ReactFlow onLoad={onLoad} elements={elements}>
-          <Controls />
-        </ReactFlow>
+        <button onClick={handleOpenPanel}>Options</button>
+
+        {show && <Pandel add={handleAdd} />}
+
+        <ReactFlowProvider>
+          <ReactFlow
+            onLoad={onLoad}
+            elements={elements}
+            onElementClick={onElementClick}
+            onConnect={onConnect}
+            onElementsRemove={handleOnElementsRemove}
+            onMoveEnd={handleOnMoveEnd}>
+            <Controls />
+            {/* <NodesDebugger /> */}
+          </ReactFlow>
+        </ReactFlowProvider>
       </OverLay>
     </div>
   )

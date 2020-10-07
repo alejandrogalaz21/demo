@@ -1,0 +1,21 @@
+.react-flow__node-default.selectable:hover,
+.react-flow__node-input.selectable:hover,
+.react-flow__node-output.selectable:hover {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+.react-flow__node-default.selected,
+.react-flow__node-default.selected:hover {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+.react-flow__node-input.selected,
+.react-flow__node-input.selected:hover {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}

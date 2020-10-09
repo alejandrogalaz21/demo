@@ -1,18 +1,8 @@
 import React from 'react'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import Router from './Router'
+import { routes } from './routes'
 
-import Board from './components/Board'
-import Quiz from './components/Quiz'
+export default function App() {
+  return <Router routes={routes} />
 
-function App() {
-  return (
-    <Router>
-      <Switch>
-        <Route exact path='/' component={Board} />
-        <Route exact path='/quiz/:id?' component={Quiz} />
-      </Switch>
-    </Router>
-  )
 }
-
-export default App
